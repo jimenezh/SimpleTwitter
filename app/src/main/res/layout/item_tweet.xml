@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
 
     <ImageView
         android:id="@+id/ivProfile"
@@ -14,10 +20,9 @@
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="0dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/ivProfile"
         android:textColor="#090909"
@@ -25,14 +30,36 @@
         tools:text="Profile Name" />
 
     <TextView
+        android:id="@+id/tvScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/tvName"
+        android:textColor="#504F4F"
+        android:textSize="12sp"
+        tools:text="Screen Name" />
+
+    <TextView
         android:id="@+id/tvTweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvName"
-        android:layout_marginStart="10dp"
+        android:layout_below="@+id/tvRelTime"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="0dp"
         android:layout_toEndOf="@+id/ivProfile"
         tools:text=" This is a tweet  This is a tweet  This is a tweet  This is a tweet  This is a tweet  This is a tweet  This is a tweet  This is a tweet " />
+
+    <TextView
+        android:id="@+id/tvRelTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:textSize="12sp"
+        tools:text="Created at:" />
 </RelativeLayout>

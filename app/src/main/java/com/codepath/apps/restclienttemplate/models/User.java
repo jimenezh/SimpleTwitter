@@ -8,6 +8,18 @@ public class User {
     public static String screenName;
     public static String profileImageUrl;
 
+    public static String getName() {
+        return name;
+    }
+
+    public static String getScreenName() {
+        return screenName;
+    }
+
+    public static String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
     public static User fromJson(JSONObject user) throws JSONException {
         User u = new User();
         u.name = user.getString("name");
