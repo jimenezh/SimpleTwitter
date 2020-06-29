@@ -7,5 +7,8 @@
     <string name="intent_host">cprest</string>
     <string name="tweet_compose_hint">What\'s happening?</string>
     <string name="tweet_btn_text">Tweet!</string>
+    <string name="empty_tweet">Your tweet cannot be empty</string>
+    <string name="snackbar_action">UNDO</string>
+    <string name="too_full_tweet">Your tweet cannot be longer than 140 characters</string>
 
 </resources>

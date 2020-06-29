@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class ComposeActivity extends AppCompatActivity {
 
     EditText etCompose;
@@ -27,10 +29,11 @@ public class ComposeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String tweetContent = etCompose.getText().toString();
                 if (tweetContent.length() <= 0) {
-                    Toast.makeText(ComposeActivity.this, "Your tweet cannot be empty", Toast.LENGTH_LONG).show();
+
+                    Snackbar.make((View) etCompose.getParent(), R.string.empty_tweet,  Snackbar.LENGTH_LONG).show();
                     return;
                 } else if (tweetContent.length() > MAX_TWEET_LENGTH) {
-                    Toast.makeText(ComposeActivity.this, "Your tweet cannot be longer than 140 characters", Toast.LENGTH_LONG).show();
+                    Snackbar.make((View) etCompose.getParent(), R.string.too_full_tweet,  Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 Toast.makeText(ComposeActivity.this, "Sending tweet!", Toast.LENGTH_LONG).show();
