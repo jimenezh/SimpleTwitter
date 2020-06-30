@@ -19,10 +19,11 @@ import java.util.List;
 
 import static com.codepath.apps.restclienttemplate.R.layout.item_tweet;
 
-public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
+public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
     Context context;
     List<Tweet> tweets;
+
 
     // Constructor
 
@@ -36,7 +37,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(item_tweet, parent,false);
+        View view = LayoutInflater.from(context).inflate(item_tweet, parent, false);
         return new ViewHolder(view);
     }
 
@@ -54,7 +55,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     }
 
     // ViewHolder class for row
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfileImage;
         TextView tvBody;
@@ -76,9 +77,21 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public void bind(Tweet t) {
             tvBody.setText(t.getBody());
             tvName.setText(t.getUser().getName());
-            tvScreenName.setText("@"+ t.getUser().getScreenName());
+            tvScreenName.setText("@" + t.getUser().getScreenName());
             tvRelTime.setText(t.getRelTime());
             Glide.with(context).load(t.getUser().getProfileImageUrl()).into(ivProfileImage);
         }
+    }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Tweet> list) {
+        tweets.addAll(list);
+        notifyDataSetChanged();
     }
 }
