@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Tweet {
     public String body;
     public String createdAt;
@@ -34,6 +38,9 @@ public class Tweet {
         return user;
     }
 
+    public Tweet() {
+    }
+
     public static Tweet fromJson(JSONObject json) throws JSONException {
         Tweet t = new Tweet();
 
@@ -42,6 +49,7 @@ public class Tweet {
         t.relTime = getRelativeTimIeaAgo(t.createdAt);
         t.body = json.getString("text");
         t.user = User.fromJson(json.getJSONObject("user"));
+//        Log.i("USer", t.user.);
 
         return t;
 

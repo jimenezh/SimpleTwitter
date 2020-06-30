@@ -2,8 +2,11 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,6 +21,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import okhttp3.Headers;
 
@@ -29,6 +33,7 @@ public class ComposeActivity extends AppCompatActivity {
     TextView charCount;
     int MAX_TWEET_LENGTH = 140;
     TwitterClient client;
+    private int REQUEST_OK = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +87,11 @@ public class ComposeActivity extends AppCompatActivity {
                         Log.i(TAG, "onSuccess");
                         try {
                             Tweet t = Tweet.fromJson(json.jsonObject);
+                            Intent intent = new Intent();
+                            intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(t));
+                            setResult(REQUEST_OK, intent);
                             Log.i(TAG, "Published tweet is: "+t.getBody());
+                            finish(); // End activity
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

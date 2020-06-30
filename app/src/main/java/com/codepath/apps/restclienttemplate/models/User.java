@@ -2,21 +2,26 @@ package com.codepath.apps.restclienttemplate.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class User {
-    public static String name;
-    public static String screenName;
-    public static String profileImageUrl;
+    public String name;
+    public String screenName;
+    public String profileImageUrl;
 
-    public static String getName() {
+    public User() {
+    }
+
+    public String getName() {
         return name;
     }
 
-    public static String getScreenName() {
+    public String getScreenName() {
         return screenName;
     }
 
-    public static String getProfileImageUrl() {
+    public String getProfileImageUrl() {
         return profileImageUrl;
     }
 
@@ -25,7 +30,6 @@ public class User {
         u.name = user.getString("name");
         u.screenName = user.getString("screen_name");
         u.profileImageUrl = user.getString("profile_image_url_https");
-
         return u;
     }
 }
