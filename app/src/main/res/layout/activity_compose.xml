@@ -28,4 +28,29 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="5dp"
         android:text="@string/tweet_btn_text" />
+
+    <LinearLayout
+        android:id="@+id/llCharCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etTweet"
+        android:layout_alignStart="@+id/etTweet"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvUserChar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="134" />
+
+        <TextView
+            android:id="@+id/tvMaxCharCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/max_char_count" />
+    </LinearLayout>
 </RelativeLayout>

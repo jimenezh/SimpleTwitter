@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -23,6 +26,7 @@ public class ComposeActivity extends AppCompatActivity {
     public static final String TAG = "ComposeActivity";
     EditText etCompose;
     Button btnTweet;
+    TextView charCount;
     int MAX_TWEET_LENGTH = 140;
     TwitterClient client;
 
@@ -35,6 +39,27 @@ public class ComposeActivity extends AppCompatActivity {
 
         etCompose = findViewById(R.id.etTweet);
         btnTweet = findViewById(R.id.btnTweet);
+        charCount = findViewById(R.id.tvUserChar);
+
+        charCount.setText("0 ");
+
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int len = charSequence.length();
+                charCount.setText(Integer.toString(len) +" ");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         publishTweet();
     }
