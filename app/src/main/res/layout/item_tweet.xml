@@ -57,4 +57,17 @@
         android:layout_toEndOf="@+id/ivProfile"
         android:textSize="12sp"
         tools:text="Created at:" />
+
+    <ImageView
+        android:id="@+id/ivTweetPic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTweet"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:contentDescription="@strings/tweet_pic_description"
+        tools:srcCompat="@tools:sample/avatars" />
 </RelativeLayout>
