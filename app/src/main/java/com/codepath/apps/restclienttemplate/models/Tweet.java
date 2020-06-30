@@ -21,6 +21,11 @@ public class Tweet {
     public String createdAt;
     public User user;
     public String relTime;
+    public String mediaUrl;
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
 
     public String getRelTime() {
         return relTime;
@@ -49,7 +54,17 @@ public class Tweet {
         t.relTime = getRelativeTimIeaAgo(t.createdAt);
         t.body = json.getString("text");
         t.user = User.fromJson(json.getJSONObject("user"));
-//        Log.i("USer", t.user.);
+
+        try{
+            t.mediaUrl = json.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            Log.i("TWEET", t.mediaUrl);
+        } catch(Exception JSONException){
+            Log.e("TWEET", "error");
+            t.mediaUrl = "";
+        }
+
+
+
 
         return t;
 
@@ -74,8 +89,8 @@ public class Tweet {
 
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
         ArrayList<Tweet> tweets = new ArrayList<>();
-        for(int i = 0; i < jsonArray.length(); i++){
-            tweets.add(  Tweet.fromJson(jsonArray.getJSONObject(i)) );
+        for (int i = 0; i < jsonArray.length(); i++) {
+            tweets.add(Tweet.fromJson(jsonArray.getJSONObject(i)));
         }
         return tweets;
     }
