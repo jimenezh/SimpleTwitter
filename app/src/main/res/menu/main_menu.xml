@@ -2,13 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/compose"
+        android:id="@+id/twitter_icon"
+        android:icon="@mipmap/ic_launcher_twitter_round"
+        android:title="Twitter icon"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Compose" />
+        android:orderInCategory="1"/>
     <item
         android:id="@+id/compose"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_launcher_twitter_"
-        android:title="Compose" />
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Compose"
+        android:orderInCategory="2"/>
 </menu>
