@@ -19,10 +19,11 @@
         android:layout_alignStart="@+id/tweetMain"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="#03A9F4"
+        android:backgroundTintMode="add"
         android:clickable="true"
         android:focusable="auto"
-        app:srcCompat="@android:drawable/btn_plus" />
+        app:srcCompat="@android:drawable/ic_popup_sync" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabFav"
@@ -32,8 +33,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/fabRetweet"
-        android:backgroundTint="#E61010"
+        android:backgroundTint="#F60202"
         android:clickable="true"
         android:focusable="auto"
-        app:srcCompat="@android:drawable/btn_plus" />
+        app:srcCompat="@android:drawable/btn_star" />
 </RelativeLayout>
