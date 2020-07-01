@@ -14,6 +14,7 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.json.JSONException;
 import org.parceler.Parcels;
+
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,12 +35,14 @@ public class TweetDetailsActivity extends AppCompatActivity {
     FloatingActionButton favFab;
     public static final String TAG = "TweetsDetailsActivity";
     TwitterClient client;
+    Boolean isFavourited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_details);
 
+        isFavourited = false;
 
         ivProfileImage = findViewById(R.id.ivProfile);
         tvBody = findViewById(R.id.tvTweet);
@@ -59,7 +62,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         Log.i("ADAPTER", tweet.getMediaUrl());
         Glide.with(this).load(tweet.getMediaUrl()).into(ivTweetPic);
 
-        if(tweet.getMediaUrl().isEmpty()){
+        if (tweet.getMediaUrl().isEmpty()) {
             ivTweetPic.setVisibility(View.GONE);
         }
 
@@ -69,26 +72,39 @@ public class TweetDetailsActivity extends AppCompatActivity {
         favFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                client.favouriteTweet(tweet.getId(), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        Log.i(TAG, "Favourited!");
-                        Toast.makeText(TweetDetailsActivity.this, "Favourited!", Toast.LENGTH_LONG)
-                                .show();
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure "+response, throwable);
-                        Toast.makeText(TweetDetailsActivity.this, "Could not favourite tweet", Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
+                isFavourited = !isFavourited;
+                Toast.makeText(TweetDetailsActivity.this,
+                        isFavourited ? "Favourited!" : "Unfavourited!",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
 
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isFavourited) {
+            favoriteTweet();
+        }
+
+    }
+
+    private void favoriteTweet() {
+        client.favouriteTweet(tweet.getId(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "Favourited!");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure " + response, throwable);
+                Toast.makeText(TweetDetailsActivity.this, "Could not favourite tweet", Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
     }
 
     private void setRetweetListener() {
@@ -112,7 +128,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure "+response, throwable);
+                        Log.e(TAG, "onFailure " + response, throwable);
                     }
                 });
             }
