@@ -6,4 +6,9 @@
         app:showAsAction="always"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Compose" />
+    <item
+        android:id="@+id/compose"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_launcher_twitter_"
+        android:title="Compose" />
 </menu>
