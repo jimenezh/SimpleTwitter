@@ -16,5 +16,6 @@
     <string name="twitter_logo_description">Twitter Logo</string>
     <string name="twitter_compose_description">Twitter Compose</string>
     <string name="dash">-</string>
+    <string name="twitter_login">Twitter Login</string>
 
 </resources>
