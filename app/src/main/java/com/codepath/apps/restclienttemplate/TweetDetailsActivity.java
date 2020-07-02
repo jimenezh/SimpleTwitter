@@ -15,7 +15,6 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 import org.json.JSONException;
 import org.parceler.Parcels;
 
-import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,8 +30,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
     TextView tvRelTime;
     ImageView ivTweetPic;
     Tweet tweet;
-    FloatingActionButton favRetweet;
-    FloatingActionButton favFab;
+    ImageView ivRetweet;
+    ImageView ivFav;
     public static final String TAG = "TweetsDetailsActivity";
     TwitterClient client;
     Boolean isFavourited;
@@ -50,8 +49,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvRelTime = findViewById(R.id.tvRelTime);
         ivTweetPic = findViewById(R.id.ivTweetPic);
-        favRetweet = findViewById(R.id.fabRetweet);
-        favFab = findViewById(R.id.fabFav);
+        ivRetweet = findViewById(R.id.ivRetweet);
+        ivFav = findViewById(R.id.ivFav);
 
         tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
         tvBody.setText(tweet.getBody());
@@ -69,7 +68,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         client = new TwitterClient(TweetDetailsActivity.this);
 
         setRetweetListener();
-        favFab.setOnClickListener(new View.OnClickListener() {
+        ivFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isFavourited = !isFavourited;
@@ -87,28 +86,48 @@ public class TweetDetailsActivity extends AppCompatActivity {
         super.onStop();
         if (isFavourited) {
             favoriteTweet();
+        } else{
+            unfavouriteTweet();
         }
 
     }
 
-    private void favoriteTweet() {
-        client.favouriteTweet(tweet.getId(), new JsonHttpResponseHandler() {
+    private void unfavouriteTweet() {
+        client.unfavoriteTweet(tweet.getId(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "Favourited!");
+                Log.i(TAG, "Unfavourited!");
+                Toast.makeText(TweetDetailsActivity.this, "Unfavourited!", Toast.LENGTH_LONG)
+                        .show();
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure " + response, throwable);
-                Toast.makeText(TweetDetailsActivity.this, "Could not favourite tweet", Toast.LENGTH_LONG)
+                Toast.makeText(TweetDetailsActivity.this, response, Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
+    }
+
+    private void favoriteTweet() {
+        client.favoriteTweet(tweet.getId(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "Favorited!");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure " + response, throwable);
+                Toast.makeText(TweetDetailsActivity.this, response, Toast.LENGTH_LONG)
                         .show();
             }
         });
     }
 
     private void setRetweetListener() {
-        favRetweet.setOnClickListener(new View.OnClickListener() {
+        ivRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 client.retweet(tweet.getId(), new JsonHttpResponseHandler() {
@@ -121,14 +140,14 @@ public class TweetDetailsActivity extends AppCompatActivity {
                             finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(TweetDetailsActivity.this, "Already retweeted this tweet", Toast.LENGTH_LONG)
-                                    .show();
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                         Log.e(TAG, "onFailure " + response, throwable);
+                        Toast.makeText(TweetDetailsActivity.this, response, Toast.LENGTH_LONG)
+                                .show();
                     }
                 });
             }

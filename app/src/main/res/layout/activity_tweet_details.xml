@@ -11,30 +11,23 @@
         android:id="@+id/tweetMain"
         layout="@layout/item_tweet"></include>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRetweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/tweetMain"
         android:layout_alignStart="@+id/tweetMain"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:backgroundTint="#03A9F4"
-        android:backgroundTintMode="add"
-        android:clickable="true"
-        android:focusable="auto"
-        app:srcCompat="@android:drawable/ic_popup_sync" />
+        app:srcCompat="@mipmap/ic_retweet_twitter_foreground" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabFav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivFav"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/tweetMain"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/fabRetweet"
-        android:backgroundTint="#F60202"
-        android:clickable="true"
-        android:focusable="auto"
-        app:srcCompat="@android:drawable/btn_star" />
+        android:layout_toEndOf="@+id/ivRetweet"
+        app:srcCompat="@mipmap/ic_heart_foreground" />
 </RelativeLayout>
