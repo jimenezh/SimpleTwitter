@@ -30,4 +30,16 @@
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/ivRetweet"
         app:srcCompat="@mipmap/ic_heart_foreground" />
+
+    <ImageView
+        android:id="@+id/ivReply"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tweetMain"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/ivFav"
+        android:padding="10dp"
+        android:tint="#000000"
+        app:srcCompat="@drawable/abc_vector_test" />
 </RelativeLayout>
