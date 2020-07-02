@@ -32,7 +32,8 @@
             android:onClick="loginToRest"
             android:text="@string/login_label"
             android:textColor="#FFFFFF"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView"
