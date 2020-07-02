@@ -69,11 +69,22 @@ public class ComposeDialogFragment extends DialogFragment {
 
 
 //         Fetch arguments from bundle and set title
+
+
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
+
+        if(getArguments().getString("user") != null){
+            etCompose.setText("@"+getArguments().getString("user")+" ");
+        }
+
         // Show soft keyboard automatically and request focus to field
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        setEditTextListener();
+
+        publishTweet();
     }
 
 //    @Override
@@ -118,13 +129,6 @@ public class ComposeDialogFragment extends DialogFragment {
         });
     }
 
-    private void isReply(EditText etCompose, Intent intent) {
-         if(   intent.hasExtra("user")){
-             String replyScreenName = intent.getStringExtra("user");
-             etCompose.setText("@"+replyScreenName+" ");
-         }
-
-    }
 
     private void publishTweet() {
         btnTweet.setOnClickListener(new View.OnClickListener() {

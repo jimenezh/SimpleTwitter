@@ -54,7 +54,7 @@ public class TimelineActivity extends AppCompatActivity {
 //                startActivityForResult(intent, REQUEST_CODE);
                 FragmentManager fm = getSupportFragmentManager();
                 ComposeDialogFragment frag = ComposeDialogFragment.newInstance("Compose Tweet");
-                frag.show(fm, "fragment_edit_name");
+                frag.show(fm, "ComposeFragment");
             }
         });
         return true;
