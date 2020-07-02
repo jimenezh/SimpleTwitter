@@ -6,13 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
 import com.codepath.apps.restclienttemplate.databinding.ActivityTweetDetailsBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
@@ -20,7 +17,6 @@ import org.json.JSONException;
 import org.parceler.Parcels;
 
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import okhttp3.Headers;
 
@@ -67,7 +63,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         binding.ivReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TweetDetailsActivity.this, ComposeActivity.class);
+                Intent intent = new Intent(TweetDetailsActivity.this, ComposeDialogFragment.class);
                 intent.putExtra("user", tweet.getUser().getScreenName());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);

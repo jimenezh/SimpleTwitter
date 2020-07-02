@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -11,17 +12,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
 import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
-import com.codepath.apps.restclienttemplate.databinding.MainMenuBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.parceler.Parcels;
 
@@ -52,8 +50,11 @@ public class TimelineActivity extends AppCompatActivity {
         compose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+//                Intent intent = new Intent(TimelineActivity.this, ComposeDialogFragment.class);
+//                startActivityForResult(intent, REQUEST_CODE);
+                FragmentManager fm = getSupportFragmentManager();
+                ComposeDialogFragment frag = ComposeDialogFragment.newInstance("Compose Tweet");
+                frag.show(fm, "fragment_edit_name");
             }
         });
         return true;

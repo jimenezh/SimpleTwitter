@@ -1,23 +1,23 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.databinding.ActivityComposeBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -29,7 +29,7 @@ import org.parceler.Parcels;
 
 import okhttp3.Headers;
 
-public class ComposeActivity extends AppCompatActivity {
+public class ComposeDialogFragment extends DialogFragment {
 
     public static final String TAG = "ComposeActivity";
     EditText etCompose;
@@ -39,21 +39,66 @@ public class ComposeActivity extends AppCompatActivity {
     TwitterClient client;
     private int REQUEST_OK = 20;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public ComposeDialogFragment() {
+    }
 
-        client = new TwitterClient(this);
+    public static ComposeDialogFragment newInstance(String title){
+        ComposeDialogFragment frag = new ComposeDialogFragment();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        frag.setArguments(args);
+        return frag;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_compose, container);
+    }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get field from view
+        ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
 
         etCompose = binding.etTweet;
         btnTweet = binding.btnTweet;
         charCount = binding.tvUserChar;
 
+        client = new TwitterClient(getContext());
 
-        charCount.setText("0 ");
 
+//         Fetch arguments from bundle and set title
+        String title = getArguments().getString("title", "Enter Name");
+        getDialog().setTitle(title);
+        // Show soft keyboard automatically and request focus to field
+        getDialog().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+//
+//        client = new TwitterClient(this);
+//
+//        etCompose = binding.etTweet;
+//        btnTweet = binding.btnTweet;
+//        charCount = binding.tvUserChar;
+//
+//
+//        charCount.setText("0 ");
+//
+//        setEditTextListener();
+//
+//        isReply(etCompose, getIntent());
+//
+//        publishTweet();
+//    }
+
+    private void setEditTextListener() {
         etCompose.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -71,10 +116,6 @@ public class ComposeActivity extends AppCompatActivity {
 
             }
         });
-
-        isReply(etCompose, getIntent());
-
-        publishTweet();
     }
 
     private void isReply(EditText etCompose, Intent intent) {
@@ -105,9 +146,9 @@ public class ComposeActivity extends AppCompatActivity {
                             Tweet t = Tweet.fromJson(json.jsonObject);
                             Intent intent = new Intent();
                             intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(t));
-                            setResult(REQUEST_OK, intent);
+//                            setResult(REQUEST_OK, intent);
                             Log.i(TAG, "Published tweet is: " + t.getBody());
-                            finish(); // End activity
+//                            finish(); // End activity
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -122,18 +163,18 @@ public class ComposeActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.compose_menu);
-        ImageView compose = findViewById(R.id.ivHome);
-        compose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ComposeActivity.this, TimelineActivity.class);
-                finish();
-            }
-        });
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.compose_menu);
+//        ImageView compose = findViewById(R.id.ivHome);
+//        compose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(ComposeDialogFragment.this, TimelineActivity.class);
+//                finish();
+//            }
+//        });
+//        return true;
+//    }
 }
