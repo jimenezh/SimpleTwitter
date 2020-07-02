@@ -51,6 +51,7 @@ public class ComposeActivity extends AppCompatActivity {
         btnTweet = binding.btnTweet;
         charCount = binding.tvUserChar;
 
+
         charCount.setText("0 ");
 
         etCompose.addTextChangedListener(new TextWatcher() {
@@ -71,7 +72,17 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+        isReply(etCompose, getIntent());
+
         publishTweet();
+    }
+
+    private void isReply(EditText etCompose, Intent intent) {
+         if(   intent.hasExtra("user")){
+             String replyScreenName = intent.getStringExtra("user");
+             etCompose.setText("@"+replyScreenName+" ");
+         }
+
     }
 
     private void publishTweet() {

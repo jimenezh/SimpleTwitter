@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTweetDetailsBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.json.JSONException;
@@ -23,52 +27,56 @@ import okhttp3.Headers;
 
 public class TweetDetailsActivity extends AppCompatActivity {
 
-    ImageView ivProfileImage;
-    TextView tvBody;
-    TextView tvScreenName;
-    TextView tvName;
-    TextView tvRelTime;
-    ImageView ivTweetPic;
+
     Tweet tweet;
-    ImageView ivRetweet;
-    ImageView ivFav;
+
     public static final String TAG = "TweetsDetailsActivity";
     TwitterClient client;
     Boolean isFavourited;
+    ActivityTweetDetailsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tweet_details);
+        binding = ActivityTweetDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         isFavourited = false;
 
-        ivProfileImage = findViewById(R.id.ivProfile);
-        tvBody = findViewById(R.id.tvTweet);
-        tvScreenName = findViewById(R.id.tvScreenName);
-        tvName = findViewById(R.id.tvName);
-        tvRelTime = findViewById(R.id.tvRelTime);
-        ivTweetPic = findViewById(R.id.ivTweetPic);
-        ivRetweet = findViewById(R.id.ivRetweet);
-        ivFav = findViewById(R.id.ivFav);
-
         tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
-        tvBody.setText(tweet.getBody());
-        tvName.setText(tweet.getUser().getName());
-        tvScreenName.setText("@" + tweet.getUser().getScreenName());
-        tvRelTime.setText(tweet.getRelTime());
-        Glide.with(this).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        binding.tweetMain.tvTweet.setText(tweet.getBody());
+        binding.tweetMain.tvName.setText(tweet.getUser().getName());
+        binding.tweetMain.tvScreenName.setText("@" + tweet.getUser().getScreenName());
+        binding.tweetMain.tvRelTime.setText(tweet.getRelTime());
+        Glide.with(this).load(tweet.getUser().getProfileImageUrl()).transform(new CircleCrop()).into(binding.tweetMain.ivProfile);
         Log.i("ADAPTER", tweet.getMediaUrl());
-        Glide.with(this).load(tweet.getMediaUrl()).into(ivTweetPic);
+        Glide.with(this).load(tweet.getMediaUrl()).into(binding.tweetMain.ivTweetPic);
 
         if (tweet.getMediaUrl().isEmpty()) {
-            ivTweetPic.setVisibility(View.GONE);
+            binding.tweetMain.ivTweetPic.setVisibility(View.GONE);
         }
 
         client = new TwitterClient(TweetDetailsActivity.this);
 
         setRetweetListener();
-        ivFav.setOnClickListener(new View.OnClickListener() {
+        setFavoriteListener();
+        setReplyListener();
+    }
+
+    private void setReplyListener() {
+        binding.ivReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TweetDetailsActivity.this, ComposeActivity.class);
+                intent.putExtra("user", tweet.getUser().getScreenName());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+            }
+        });
+    }
+
+    private void setFavoriteListener() {
+        binding.ivFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isFavourited = !isFavourited;
@@ -77,8 +85,6 @@ public class TweetDetailsActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     @Override
@@ -127,7 +133,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     }
 
     private void setRetweetListener() {
-        ivRetweet.setOnClickListener(new View.OnClickListener() {
+        binding.ivRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 client.retweet(tweet.getId(), new JsonHttpResponseHandler() {
