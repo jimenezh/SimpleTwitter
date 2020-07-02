@@ -51,6 +51,7 @@ public class Tweet {
     public Tweet() {
     }
 
+
     public static Tweet fromJson(JSONObject json) throws JSONException {
         Tweet t = new Tweet();
 

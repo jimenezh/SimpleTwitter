@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,12 +11,15 @@ import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.databinding.ActivityComposeBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,13 +42,14 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose);
+        ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         client = new TwitterClient(this);
 
-        etCompose = findViewById(R.id.etTweet);
-        btnTweet = findViewById(R.id.btnTweet);
-        charCount = findViewById(R.id.tvUserChar);
+        etCompose = binding.etTweet;
+        btnTweet = binding.btnTweet;
+        charCount = binding.tvUserChar;
 
         charCount.setText("0 ");
 
@@ -105,12 +110,19 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
     }
-//
-//    @Override
-//    protected void onStop() {
-//        setResult(REQUEST_OK);
-//        Log.i(TAG, "Set request to OK");
-//
-//        super.onStop();
-//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.compose_menu);
+        ImageView compose = findViewById(R.id.ivHome);
+        compose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ComposeActivity.this, TimelineActivity.class);
+                finish();
+            }
+        });
+        return true;
+    }
 }

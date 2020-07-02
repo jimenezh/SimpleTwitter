@@ -6,6 +6,9 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
+    buildFeatures {
+        viewBinding true
+    }
     compileSdkVersion 28
 
     defaultConfig {
