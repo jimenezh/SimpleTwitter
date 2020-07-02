@@ -59,4 +59,19 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("status", tweetContent);
 		client.post(apiUrl, params,"" ,handler);
 	}
+
+	public void retweet(String id, JsonHttpResponseHandler handler){
+		String apiUrl = getApiUrl(String.format("/statuses/retweet/%s.json", id));
+		RequestParams params = new RequestParams();
+		params.put("Name", "");
+		client.post(apiUrl, params,"" ,handler);
+	}
+
+	public void favouriteTweet(String id, JsonHttpResponseHandler handler){
+		String apiUrl = getApiUrl("/favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("Name", "");
+		params.put("id",id);
+		client.post(apiUrl, params,"" ,handler);
+	}
 }
