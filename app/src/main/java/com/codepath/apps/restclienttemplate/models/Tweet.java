@@ -22,6 +22,7 @@ public class Tweet {
     public User user;
     public String relTime;
     public String mediaUrl;
+    public String id;
 
     public String getMediaUrl() {
         return mediaUrl;
@@ -46,6 +47,10 @@ public class Tweet {
     public Tweet() {
     }
 
+    public String getId() {
+        return id;
+    }
+
     public static Tweet fromJson(JSONObject json) throws JSONException {
         Tweet t = new Tweet();
 
@@ -54,6 +59,7 @@ public class Tweet {
         t.relTime = getRelativeTimIeaAgo(t.createdAt);
         t.body = json.getString("text");
         t.user = User.fromJson(json.getJSONObject("user"));
+        t.id = json.getString("id_str");
 
         try{
             t.mediaUrl = json.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");

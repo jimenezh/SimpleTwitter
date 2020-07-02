@@ -37,6 +37,9 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetAdapter tweetAdapter;
     private SwipeRefreshLayout swipeContainer;
+    LinearLayoutManager linearLayoutManager;
+    int lowestTweetId;
+    int maxTweetId;
 
 
     @Override
@@ -55,17 +58,6 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.compose) {
-//            // Navigate to compos e activity
-//            Intent intent = new Intent(this, ComposeActivity.class);
-//            startActivityForResult(intent, REQUEST_CODE);
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -96,10 +88,24 @@ public class TimelineActivity extends AppCompatActivity {
         tweetAdapter = new TweetAdapter(this, tweets);
         // RV setup: layout manager and rv
         recyclerView.setAdapter(tweetAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         setSwipeRefresh();
 
-        populateHomeTimeline();
+        setOnScrollListener();
+        populateHomeTimeline("");
+
+
+    }
+
+    private void setOnScrollListener() {
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Tweet lastTweet = tweets.get(tweets.size()-1);
+                populateHomeTimeline(lastTweet.getId());
+            }
+        });
     }
 
     private void setSwipeRefresh() {
@@ -112,7 +118,7 @@ public class TimelineActivity extends AppCompatActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                populateHomeTimeline();
+                populateHomeTimeline("");
             }
         });
         // Configure the refreshing colors
@@ -122,13 +128,12 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
     }
 
-    private void populateHomeTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+    private void populateHomeTimeline(String maxTweetId) {
+        client.getHomeTimeline(maxTweetId, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "onSuccess " + json.toString());
-                tweetAdapter.clear();
                 try {
                     tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
                     tweetAdapter.notifyDataSetChanged();
