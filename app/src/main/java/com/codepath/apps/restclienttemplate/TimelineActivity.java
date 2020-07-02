@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
+import com.codepath.apps.restclienttemplate.databinding.MainMenuBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -38,8 +40,7 @@ public class TimelineActivity extends AppCompatActivity {
     TweetAdapter tweetAdapter;
     private SwipeRefreshLayout swipeContainer;
     LinearLayoutManager linearLayoutManager;
-    int lowestTweetId;
-    int maxTweetId;
+    ActivityTimelineBinding binding;
 
 
     @Override
@@ -68,7 +69,7 @@ public class TimelineActivity extends AppCompatActivity {
             tweets.add(0, t);
             tweetAdapter.notifyItemInserted(0);
             recyclerView.smoothScrollToPosition(0);
-        } else{
+        } else {
             recyclerView.smoothScrollToPosition(0);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -77,12 +78,13 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
-
         client = new TwitterClient(this);
 
+        binding = ActivityTimelineBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         // Find the recycler view
-        recyclerView = findViewById(R.id.rvTweets);
+        recyclerView = binding.rvTweets;
         // Init the list of tweets and adapter
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(this, tweets);
@@ -102,7 +104,7 @@ public class TimelineActivity extends AppCompatActivity {
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Tweet lastTweet = tweets.get(tweets.size()-1);
+                Tweet lastTweet = tweets.get(tweets.size() - 1);
                 populateHomeTimeline(lastTweet.getId());
             }
         });
@@ -110,14 +112,11 @@ public class TimelineActivity extends AppCompatActivity {
 
     private void setSwipeRefresh() {
         // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) binding.swipeContainer;
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 populateHomeTimeline("");
             }
         });
