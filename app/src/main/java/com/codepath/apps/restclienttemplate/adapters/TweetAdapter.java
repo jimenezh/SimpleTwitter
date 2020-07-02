@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TweetDetailsActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -57,7 +61,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     }
 
     // ViewHolder class for row
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView ivProfileImage;
         TextView tvBody;
@@ -76,6 +80,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvName = itemView.findViewById(R.id.tvName);
             tvRelTime = itemView.findViewById(R.id.tvRelTime);
             ivTweetPic = itemView.findViewById(R.id.ivTweetPic);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet t) {
@@ -92,6 +98,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             if(t.getMediaUrl().isEmpty()){
                 ivTweetPic.setVisibility(View.GONE);
             }
+        }
+
+        @Override
+        public void onClick(View view) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, TweetDetailsActivity.class);
+                    Tweet t = tweets.get(getAdapterPosition());
+                    intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(t));
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
