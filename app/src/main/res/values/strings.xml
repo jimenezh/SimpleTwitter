@@ -13,5 +13,8 @@
     <string name="max_char_count"> / 140</string>
     <string name="tweet_pic_description">Tweet Picture</string>
     <string name="twitter_blue">#1DA1F2</string>
+    <string name="twitter_logo_description">Twitter Logo</string>
+    <string name="twitter_compose_description">Twitter Compose</string>
+    <string name="dash">-</string>
 
 </resources>

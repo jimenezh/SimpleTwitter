@@ -57,7 +57,7 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int len = charSequence.length();
-                charCount.setText(Integer.toString(len) +" ");
+                charCount.setText(Integer.toString(len) + " ");
             }
 
             @Override
@@ -75,10 +75,10 @@ public class ComposeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String tweetContent = etCompose.getText().toString();
                 if (tweetContent.length() <= 0) {
-                    Snackbar.make((View) etCompose.getParent(), R.string.empty_tweet,  Snackbar.LENGTH_LONG).show();
+                    Snackbar.make((View) etCompose.getParent(), R.string.empty_tweet, Snackbar.LENGTH_LONG).show();
                     return;
                 } else if (tweetContent.length() > MAX_TWEET_LENGTH) {
-                    Snackbar.make((View) etCompose.getParent(), R.string.too_full_tweet,  Snackbar.LENGTH_LONG).show();
+                    Snackbar.make((View) etCompose.getParent(), R.string.too_full_tweet, Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
@@ -90,7 +90,7 @@ public class ComposeActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(t));
                             setResult(REQUEST_OK, intent);
-                            Log.i(TAG, "Published tweet is: "+t.getBody());
+                            Log.i(TAG, "Published tweet is: " + t.getBody());
                             finish(); // End activity
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -99,10 +99,18 @@ public class ComposeActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure " +response, throwable);
+                        Log.e(TAG, "onFailure " + response, throwable);
                     }
                 });
             }
         });
     }
+//
+//    @Override
+//    protected void onStop() {
+//        setResult(REQUEST_OK);
+//        Log.i(TAG, "Set request to OK");
+//
+//        super.onStop();
+//    }
 }
