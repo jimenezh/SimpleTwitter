@@ -52,7 +52,10 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-- My CustomAppBar kept getting overwritten (just got overwritten)
+- My CustomAppBar kept getting overwritten
+- LiceCap kept recordnig black gifs
+- Some images were not loading -> image rendering oworks only on native images
+- tweets list was deleted when repopulating timeline for refresh feature causing some bugs when implementing infinite scrolling
 
 ## Open-source libraries used
 
