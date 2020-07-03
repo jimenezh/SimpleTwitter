@@ -112,7 +112,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure " + response, throwable);
-                Toast.makeText(TweetDetailsActivity.this, response, Toast.LENGTH_LONG)
+                Toast.makeText(TweetDetailsActivity.this, "Already done!", Toast.LENGTH_LONG)
                         .show();
             }
         });
@@ -128,7 +128,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure " + response, throwable);
-                Toast.makeText(TweetDetailsActivity.this, response, Toast.LENGTH_LONG)
+                Toast.makeText(TweetDetailsActivity.this, "Already done!", Toast.LENGTH_LONG)
                         .show();
             }
         });
@@ -141,20 +141,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 client.retweet(tweet.getId(), new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        try {
-                            Log.i(TAG, Tweet.fromJson(json.jsonObject).getBody());
+
                             Toast.makeText(TweetDetailsActivity.this, "Retweeted!", Toast.LENGTH_LONG)
                                     .show();
-                            finish();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                            try {
+                                Tweet t = Tweet.fromJson(json.jsonObject);
+                                Intent intent = new Intent();
+                                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(t));
+                                setResult(20, intent);
+                                Log.i(TAG, "Published tweet is: " + t.getBody());
+                                finish(); // End activity
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                     }
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                         Log.e(TAG, "onFailure " + response, throwable);
-                        Toast.makeText(TweetDetailsActivity.this, response, Toast.LENGTH_LONG)
+                        Toast.makeText(TweetDetailsActivity.this, "Already retweeted", Toast.LENGTH_LONG)
                                 .show();
                     }
                 });
