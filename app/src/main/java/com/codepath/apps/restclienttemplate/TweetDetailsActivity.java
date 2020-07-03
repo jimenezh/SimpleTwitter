@@ -1,10 +1,12 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -92,7 +94,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         super.onStop();
         if (isFavourited) {
             favoriteTweet();
-        } else{
+        } else {
             unfavouriteTweet();
         }
 
@@ -158,5 +160,22 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.compose_menu);
+        ImageView compose = findViewById(R.id.ivHome);
+
+        compose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TweetDetailsActivity.this, TimelineActivity.class);
+                finish();
+            }
+        });
+        return true;
     }
 }
