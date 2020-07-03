@@ -134,12 +134,15 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
     }
 
-    private void populateHomeTimeline(String maxTweetId) {
+    private void populateHomeTimeline(final String maxTweetId) {
         client.getHomeTimeline(maxTweetId, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "onSuccess " + json.toString());
+
+                if(maxTweetId.isEmpty())
+                    tweets.clear();
                 try {
                     tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
                     tweetAdapter.notifyDataSetChanged();
